@@ -1,6 +1,16 @@
 import styles from "./Keyboard.module.css";
 
-export function Keyboard() {
+type KeyboardProps = {
+  activeLetter: string[];
+  inactiveLetter: string[];
+  addGuessLetter: (letter: string) => void;
+  disabled: boolean;
+}
+
+export function Keyboard({ 
+  activeLetter, inactiveLetter, addGuessLetter, disabled = false 
+} : KeyboardProps
+) {
   const KEYS = [
     "a",
     "b",
@@ -30,18 +40,25 @@ export function Keyboard() {
     "z"
   ]
 
-
   return (
     <div style={{
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(75px, 1fr))",
       gap: ".5rem"
     }}>
-      {KEYS.map((key) => (
-        <button className={styles.btn} key={key}>
-          {key}
-        </button>
-      ))}
+      {KEYS.map((key) => {
+        const isActive = activeLetter.includes(key)
+        const isInactive = inactiveLetter.includes(key)
+        return (
+          <button 
+          onClick={() => addGuessLetter(key)} 
+          className={`${styles.btn} ${isActive ? styles.active : ''} ${isInactive ? styles.inactive : ''}`} 
+          key={key}
+          disabled={isActive || isInactive || disabled}>
+            {key}
+          </button>
+        )
+      })}
     </div>
   )
 }

@@ -1,6 +1,12 @@
-export function HangmanWord() {
-  const word = "test"
-  const guessedLetters = "t"
+type HangmanWordProps = {
+  wordToGuess: string;
+  guessLetters: string[];
+  reveal?: boolean;
+}
+
+export function HangmanWord({ wordToGuess, guessLetters, reveal = false} : HangmanWordProps) {
+  const word = wordToGuess;
+  const guessedLetters = guessLetters;
   return (
     <div style={{
       display: "flex",
@@ -15,7 +21,8 @@ export function HangmanWord() {
         word.split("").map((letter, index) => (
           <span style={{ borderBottom: ".1em solid black" }} key={index}>
             <span style={{
-              visibility: guessedLetters.includes(letter) ? 'visible' : 'hidden'
+              visibility: guessedLetters.includes(letter) ||  reveal ? 'visible' : 'hidden',
+              color: !guessLetters.includes(letter) && reveal ? 'red' : 'black'
             }}>
               {letter}
             </span>
